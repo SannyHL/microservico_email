@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/email")
@@ -30,5 +31,30 @@ public class MsEmailController {
         msEmailModel.setDataEnvioEmail(LocalDateTime.now(ZoneId.of("UTC")));
         return new ResponseEntity<>(msEmailService.create(msEmailModel) ,HttpStatus.CREATED);
     }
+
+    @GetMapping("/")
+    public ResponseEntity<List<MsEmailModel>> verTodosEmails(){
+        return new ResponseEntity<>(msEmailService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{emailId}")
+    public ResponseEntity<MsEmailModel> verEmails(@PathVariable (value = "emailId")UUID emailId){
+        Optional<MsEmailModel> emailModelOptional = msEmailService.getId(emailId);
+        if(emailModelOptional.isPresent()){
+            return new ResponseEntity<>(emailModelOptional.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/enviar")
+    public ResponseEntity<MsEmailModel> envioEmailNavegador(MsEmailDto msEmailDto){
+        var msEmailModel = new MsEmailModel();
+        BeanUtils.copyProperties(msEmailDto, msEmailModel);
+        msEmailModel.setDataEnvioEmail(LocalDateTime.now(ZoneId.of("UTC")));
+        return new ResponseEntity<>(msEmailService.create(msEmailModel) ,HttpStatus.CREATED);
+    }
+
+
 
 }
