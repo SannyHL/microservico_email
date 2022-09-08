@@ -28,7 +28,7 @@ public class MsEmailController {
         var msEmailModel = new MsEmailModel();
         BeanUtils.copyProperties(msEmailDto, msEmailModel);
         msEmailModel.setDataEnvioEmail(LocalDateTime.now(ZoneId.of("UTC")));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(msEmailService.create(msEmailModel) ,HttpStatus.CREATED);
     }
 
 }
