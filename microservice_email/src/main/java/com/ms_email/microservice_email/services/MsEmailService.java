@@ -9,6 +9,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class MsEmailService {
 
@@ -18,6 +23,15 @@ public class MsEmailService {
     private MsEmailRepository msEmailRepository;
 
 
+    public List<MsEmailModel> getAll() {
+        return msEmailRepository.findAll();
+    }
+
+    public Optional<MsEmailModel> getId(UUID emailId) {
+        return msEmailRepository.findById(emailId);
+    }
+
+    @Transactional
     public MsEmailModel create(MsEmailModel msEmailModel) {
         try {
             var mensagem = new SimpleMailMessage();
@@ -33,4 +47,6 @@ public class MsEmailService {
             return msEmailRepository.save(msEmailModel);
         }
     }
+
+
 }
