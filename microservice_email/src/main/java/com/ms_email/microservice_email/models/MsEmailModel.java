@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -15,15 +14,20 @@ public class MsEmailModel {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID emailId;
-
+    private Long emailId;
+    @Column
     private String pessoaEmail;
+    @Column
     private String emissorEmail;
+    @Column
     private String destinatarioEmail;
+    @Column
     private String tituloEmail;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String texto;
+    @Column
     private StatusEnvioEmail statusEnvioEmail;
+    @Column
     private LocalDateTime dataEnvioEmail;
 
 
