@@ -38,13 +38,18 @@ public class MsEmailController {
     }
 
     @GetMapping("/{emailId}")
-    public ResponseEntity<MsEmailModel> verEmails(@PathVariable (value = "emailId")UUID emailId){
+    public ResponseEntity<MsEmailModel> verEmails(@PathVariable (value = "emailId")Long emailId){
         Optional<MsEmailModel> emailModelOptional = msEmailService.getId(emailId);
         if(emailModelOptional.isPresent()){
             return new ResponseEntity<>(emailModelOptional.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/enviar")
+    public String entrarPagina(){
+        return "envia_email";
     }
 
     @PostMapping("/enviar")
